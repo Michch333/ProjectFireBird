@@ -2,32 +2,50 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div style="height: 100%; display: flex; flex-direction: row; justify-content: space-between; border: 1px solid blue">
-    <div id="player_left" style="display: flex; flex-direction: column; justify-content: space-between; border: 1px solid red;" >
+<div style="height: 80vh; width: 100%; display: flex; flex-direction: row; justify-content: space-between; border: 1px solid blue">
+    <div id="player_left" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid red; flex: 1;" >
         <div id="player_one" style="background-color: lightcyan;">
             <h1>Mike Campbell</h1>
             <p>Current Roll:</p><p>26</p>
             <p>Current Game Score:</p>
-            <p>Dabcheck:</p><br />
+            <p>Dabcheck:</p>
             <input type="checkbox" />
             <p>Wins: 2</p>
 
         </div>
-        <div id="player_two" style="background-color: black; height: 25px; width: 25px;">
-
+        <div id="player_two" style="background-color: lightgreen;">
+            <h1>Jason Walser</h1>
+            <p>Current Roll:</p><p>42</p>
+            <p>Current Game Score:</p>
+            <p>Dabcheck:</p>
+            <input type="checkbox" />
+            <p>Wins: 3</p>
         </div>
     </div>
-    <div id="game_field" style="flex-grow: 3">
-        <div id="game_info">
+    <div id="game_field" style="flex: 3">
+        <partial name="_GameInfo" />
+        @if (false)
+        {
+            <partial name="_RollInfo" />
+        }
 
-        </div>
     </div>
-    <div id="player_right" style="display: flex; flex-direction: column; justify-content: space-between; border: 1px solid orange;">
-        <div id="player_three" style="background-color: black; height: 25px; width: 25px;">
-
+    <div id="player_right" style="display: flex; flex-direction: column; justify-content: space-between; border: 1px solid orange; flex: 1;">
+        <div id="player_three" style="background-color: lightseagreen">
+            <h1>Greg Koniecki</h1>
+            <p>Current Roll:</p><p>18</p>
+            <p>Current Game Score:</p>
+            <p>Dabcheck:</p>
+            <input type="checkbox" />
+            <p>Wins: 1</p>
         </div>
-        <div id="player_four" style="background-color: black; height: 25px; width: 25px;">
-
+        <div id="player_four" style="background-color: black;">
+            <h1>Not Available</h1>
+            <p>Current Roll:</p><p>-</p>
+            <p>Current Game Score:</p>
+            <p>Dabcheck:</p>
+            <input type="checkbox" />
+            <p>Wins: 0</p>
         </div>
     </div>
         
