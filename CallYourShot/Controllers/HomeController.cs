@@ -39,5 +39,30 @@ namespace CallYourShot.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public int DiceRoll() 
+        {
+                Random dice = new Random();
+                int roll = dice.Next(1, 60);
+                return roll;
+        }
+        public IActionResult GameRoll(List<Player> players)
+        {
+            int numberToRollUnder = 0;
+            string rollWinner = null; 
+            foreach(var player in players)
+            {
+                int playerRoll =DiceRoll();
+                if(playerRoll <= numberToRollUnder)
+                {
+                     player.roll = playerRoll;
+                    rollWinner = player.Name;
+
+                }
+            }
+
+
+            return View();
+        }
+        
     }
 }
