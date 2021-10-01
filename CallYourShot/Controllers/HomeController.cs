@@ -1,4 +1,5 @@
 ﻿using CallYourShot.Models;
+using CallYourShot.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,12 @@ using System.Threading.Tasks;
 namespace CallYourShot.Controllers
 {
     public class HomeController : Controller
-    {
+    {            
+        public int numberToRollUnder = 0;
         public IActionResult Index()
         {
-            return View();
+            var viewModel = new HomePageViewModel();
+            return View(viewModel);
         }
 
         public IActionResult About()
@@ -45,23 +48,28 @@ namespace CallYourShot.Controllers
                 int roll = dice.Next(1, 60);
                 return roll;
         }
-        public IActionResult GameRoll(List<Player> players)
+        public IActionResult GameRoll(List<Player> players, int numberToRollUnder)
         {
-            int numberToRollUnder = 0;
-            string rollWinner = null; 
+
+            var playersWithRolls = new List<Player>();
             foreach(var player in players)
             {
                 int playerRoll =DiceRoll();
                 if(playerRoll <= numberToRollUnder)
                 {
-                     player.roll = playerRoll;
-                    rollWinner = player.Name;
-
+                    player.Roll = playerRoll;
+                    playersWithRolls.Add(player);
                 }
+             }
+            if (playersWithRolls.Count() == 0)
+            {
+                GameRoll( players, numberToRollUnder);
             }
 
-
-            return View();
+            var orderdedList = playersWithRolls.OrderBy(p => p.Roll).ToList<Player>();
+            var viewModel = new RollInfoViewModel();
+            viewModel.RollWinner = orderdedList[0];
+            return View("Index", viewModel);
         }
         
     }

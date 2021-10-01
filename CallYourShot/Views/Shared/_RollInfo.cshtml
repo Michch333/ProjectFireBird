@@ -4,4 +4,7 @@
 @{
 }
 
-<p>Roll info works</p>
+@model CallYourShot.Models.ViewModels.HomePageViewModel
+
+<h1>Winner Name: @Model.RollWinner.Name</h1>
+<p>Winners Roll: @Model.RollWinner.Roll</p>

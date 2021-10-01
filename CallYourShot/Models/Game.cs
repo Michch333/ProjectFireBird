@@ -12,7 +12,8 @@ namespace CallYourShot.Models
         public string Type { get; set; }
         public List<Player> Players { get; set; }
         public bool HasBeenPlayed { get; set; }
-        public string Winner { get; set; }
+        public Player Winner { get; set; }
         public int WinnerScore { get; set; }
+        public Player LastPlace { get; set; }
     }
 }
