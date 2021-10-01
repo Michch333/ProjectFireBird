@@ -41,12 +41,13 @@ namespace CallYourShot.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        //public int DiceRoll() 
-        //{
-        //        Random dice = new Random();
-        //        int roll = dice.Next(1, 60);
-        //        return roll;
-        //}
+        //*start dice logic
+        public int DiceRoll()
+        {
+            Random dice = new Random();
+            int roll = dice.Next(1, 60);
+            return roll;
+        }
         public Player DiceRoll(Player player)
         {
             Random dice = new Random();
@@ -66,14 +67,12 @@ namespace CallYourShot.Controllers
                     playersWithRolls.Add(player);
                 }
             }
-
-            CheckforWinner(players, numberToRollUnder, playersWithRolls);
             var viewModel = new RollInfoViewModel();
-            viewModel.RollWinner = playersWithRolls.FirstOrDefault();
+            viewModel.RollWinner = CheckforWinner(players, numberToRollUnder, playersWithRolls);
             return View("Index", viewModel);
         }
 
-        private void CheckforWinner(List<Player> players, int numberToRollUnder, List<Player> playersWithRolls)
+        private Player CheckforWinner(List<Player> players, int numberToRollUnder, List<Player> playersWithRolls)
         {
             if (playersWithRolls.Count() == 0)
             {
@@ -84,6 +83,7 @@ namespace CallYourShot.Controllers
             {
                 CheckForTie(playersWithRolls, numberToRollUnder);
             }
+            return players.FirstOrDefault();
         }
 
         public void CheckForTie(List<Player> playersWithRolls,int numberToRollUnder)
@@ -101,6 +101,17 @@ namespace CallYourShot.Controllers
             }
             GameRoll(tiedPLayersList, numberToRollUnder);
         }
+        //*end dice logic
+
+        //*Start game logic
+        public void GameChooser()
+        {
+                    
+        }
+
+        //*end game logic
+
+
 
     }
 }
