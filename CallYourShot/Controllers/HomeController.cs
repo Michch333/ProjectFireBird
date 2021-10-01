@@ -1,10 +1,12 @@
 ﻿using CallYourShot.Models;
+using CallYourShot.Models.Enums;
 using CallYourShot.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace CallYourShot.Controllers
 {
@@ -103,10 +105,52 @@ namespace CallYourShot.Controllers
         }
         //*end dice logic
 
-        //*Start game logic
-        public void GameChooser()
+        //*Start games logic
+        public void GameChooser(List<Player> players,Player rollWinner)
         {
-                    
+                 
+        }
+        public List<string> GameTypesListMaker(List<GameTypes> games)
+        {
+            var gamesListWithoutDelimiters = new List<string>();
+            var gameTypeList = Enum.GetNames(typeof(GameTypes)).ToList();
+            foreach(var gameType in gameTypeList)
+            {
+                string GameTypeWithSpaces = Regex.Replace(gameType, @"[_]"," ");
+                string GameTypeWithDashes = Regex.Replace(GameTypeWithSpaces, @"[__]", "-");
+                string GameTypeRemoveStar = Regex.Replace(GameTypeWithDashes, @"[*]", "");
+                gamesListWithoutDelimiters.Add(GameTypeRemoveStar);
+            }
+            return gamesListWithoutDelimiters;
+        }
+
+        public List<string> ConsoleListMaker()
+        {
+            var consoleList = Enum.GetNames(typeof(GamingConsoles)).ToList();
+            var consolelistWithoutDelimiters = new List<String>();
+            foreach(var consoles in consoleList)
+            {
+                string consoleWithSpaces = Regex.Replace(consoles, @"[_]", " ");
+                string consoleTypeWithDashes = Regex.Replace(consoleWithSpaces, @"[__]", "-");
+                string consoleTypeRemoveStar = Regex.Replace(consoleTypeWithDashes, @"[*]", "");
+                consolelistWithoutDelimiters.Add(consoleTypeRemoveStar);
+            }
+            return consolelistWithoutDelimiters;
+        }
+
+        public void GameApiCall()
+        {
+
+        }
+        public void WriteGameInfoToDB()
+        {
+
+        }
+
+        public Player GameWinnerLogic(List<Player> players)
+        {
+
+            return null;
         }
 
         //*end game logic
