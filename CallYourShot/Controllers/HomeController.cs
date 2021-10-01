@@ -110,7 +110,7 @@ namespace CallYourShot.Controllers
         {
                  
         }
-        public List<string> GameTypesListMaker(List<GameTypes> games)
+        public List<string> GameTypeToDisplayString(List<GameTypes> games)
         {
             var gamesListWithoutDelimiters = new List<string>();
             var gameTypeList = Enum.GetNames(typeof(GameTypes)).ToList();
@@ -156,10 +156,10 @@ namespace CallYourShot.Controllers
         }
 
         public Player GameWinnerLogic(List<Player> players, string gameList,string consoleList)
-        { 
-            var SelectedGameType ="" ;
-            var currentPlayersGameScores = new List<Player>().OrderByDescending(p => p.Roll).ToList<Player>();  
-            if( SelectedGameType != "Racing Games")
+        {
+            GameTypes SelectedGameType;
+            // var currentPlayersGameScores = new List<Player>().OrderByDescending(p => p.Roll).ToList<Player>();  
+            if( SelectedGameType != GameTypes.Racing_Games) // type of racing game instead of string?
             {
               var orderdedList = currentGamePlayersWithScores.OrderByDescending(p => p.Roll).ToList<Player>();
                 return orderdedList.First();

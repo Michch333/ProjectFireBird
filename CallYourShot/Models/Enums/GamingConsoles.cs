@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//*__ equals "-" _ equal" " 
+// __ equals "-" _ equal" " 
 namespace CallYourShot.Models.Enums
 {
     public enum GamingConsoles
