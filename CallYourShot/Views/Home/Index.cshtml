@@ -1,12 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@model CallYourShot.Models.ViewModels.HomePageViewModel
 
 <div style="height: 80vh; width: 100%; display: flex; flex-direction: row; justify-content: space-between; border: 1px solid blue">
     <div id="player_left" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid red; flex: 1;" >
         <div id="player_one" style="background-color: lightcyan;">
-            <h1>Mike Campbell</h1>
-            <p>Current Roll:</p><p>26</p>
+            <h1>@Model.ActivePlayers[0].Name</h1>
+            <p>Current Roll: @Model.ActivePlayers[0].Roll</p><p>26</p>
             <p>Current Game Score:</p>
             <p>Dabcheck:</p>
             <input type="checkbox" />
@@ -14,8 +15,8 @@
 
         </div>
         <div id="player_two" style="background-color: lightgreen;">
-            <h1>Jason Walser</h1>
-            <p>Current Roll:</p><p>42</p>
+            <h1>@Model.ActivePlayers[1].Name</h1>
+            <p>Current Roll: @Model.ActivePlayers[1].Roll</p><p>42</p>
             <p>Current Game Score:</p>
             <p>Dabcheck:</p>
             <input type="checkbox" />
@@ -23,8 +24,7 @@
         </div>
     </div>
     <div id="game_field" style="flex: 3">
-        <partial name="_ConfirmGame" />
-        @if (false)
+        @if (true)
         {
             <partial name="_RollInfo" />
         }
