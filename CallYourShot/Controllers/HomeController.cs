@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 namespace CallYourShot.Controllers
 {
     public class HomeController : Controller
-    {            
+    {   List<Player> currentGamePlayersWithScores = new List<Player>();          
         public int numberToRollUnder = 0;
         public IActionResult Index()
         {
@@ -58,7 +58,7 @@ namespace CallYourShot.Controllers
         }
         public IActionResult GameRoll(List<Player> players, int numberToRollUnder)
         {
-            var playersWithRolls = new List<Player>();
+            var playersWithRolls = new List<Player>().OrderByDescending(p => p.Roll).ToList<Player>();
 
             foreach (var player in players)
             {
@@ -91,11 +91,10 @@ namespace CallYourShot.Controllers
         public void CheckForTie(List<Player> playersWithRolls,int numberToRollUnder)
         {
             var tiedPLayersList = new List<Player>();
-            var orderdedList = playersWithRolls.OrderBy(p => p.Roll).ToList<Player>();
 
-            foreach (Player player in orderdedList)
+            foreach (Player player in playersWithRolls)
             {
-                if (player.Roll == orderdedList.FirstOrDefault().Roll)
+                if (player.Roll == playersWithRolls.FirstOrDefault().Roll)
                 {
                     tiedPLayersList.Add(player);
                 }
@@ -106,6 +105,7 @@ namespace CallYourShot.Controllers
         //*end dice logic
 
         //*Start games logic
+        
         public void GameChooser(List<Player> players,Player rollWinner)
         {
                  
@@ -137,7 +137,7 @@ namespace CallYourShot.Controllers
             }
             return consolelistWithoutDelimiters;
         }
-
+        //*will seperate out later
         public void GameApiCall()
         {
 
@@ -146,11 +146,37 @@ namespace CallYourShot.Controllers
         {
 
         }
-
-        public Player GameWinnerLogic(List<Player> players)
+        //*will seperate out later end
+        public void GameScoreEntry(Player player) 
         {
+            var score = 0;
+            player.GameScore = score ;
+            currentGamePlayersWithScores.Add(player);
+            
+        }
 
-            return null;
+        public Player GameWinnerLogic(List<Player> players, string gameList,string consoleList)
+        { 
+            var SelectedGameType ="" ;
+            var currentPlayersGameScores = new List<Player>().OrderByDescending(p => p.Roll).ToList<Player>();  
+            if( SelectedGameType != "Racing Games")
+            {
+              var orderdedList = currentGamePlayersWithScores.OrderByDescending(p => p.Roll).ToList<Player>();
+                return orderdedList.First();
+            }
+            //* gonna code individual game score logic later but the two active ones should fit our needs for testing
+            //if (SelectedGameType == "Race")
+            //{
+            //    var orderdedList = currentGamePlayersWithScores.OrderByDescending(p => p.Roll).ToList<Player>();
+
+            //    return orderdedList.First();
+            //}
+            else
+            {
+                var orderdedList = currentGamePlayersWithScores.OrderBy(p => p.Roll).ToList<Player>();
+                return orderdedList.First();
+            }
+            
         }
 
         //*end game logic
