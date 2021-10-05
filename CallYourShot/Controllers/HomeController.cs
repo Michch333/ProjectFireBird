@@ -9,16 +9,20 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CallYourShot.Controllers
-{
+{ 
     public class HomeController : Controller
-    {   List<Player> currentGamePlayersWithScores = new List<Player>();          
-        public int numberToRollUnder = 0;
+    {
         public IActionResult Index()
         {
             var viewModel = new HomePageViewModel();
             return View(viewModel);
+        } 
+        public IActionResult DisplayUsersRoll(HomePageViewModel viewModel)
+        {
+            DiceRoll(viewModel.CurrentRoller);
+            viewModel.CurrentRoll = viewModel.CurrentRoller.Roll;
+            return View("Index", viewModel);
         }
-
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
@@ -44,48 +48,52 @@ namespace CallYourShot.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         //*start dice logic
-        public int DiceRoll()
-        {
-            Random dice = new Random();
-            int roll = dice.Next(1, 60);
-            return roll;
-        }
         public Player DiceRoll(Player player)
         {
             Random dice = new Random();
             player.Roll = dice.Next(1, 60);
             return player;
-        }
-        public IActionResult GameRoll(List<Player> players, int numberToRollUnder)
-        {
-            var playersWithRolls = new List<Player>().OrderByDescending(p => p.Roll).ToList<Player>();
 
+        }
+        public IActionResult GameRoll(List<Player> players)
+        {
+            var playersWithRolls = players.OrderByDescending(p => p.Roll).ToList<Player>();
+            var viewModel = new RollInfoViewModel();
+            int numberToRollUnder = 60;
+            DiceRoll(players[0]);
+            //DisplayUsersRoll("Greg");
+            if (playersWithRolls.Count() == players.Count())
+            {
+                CheckIfValid(players, playersWithRolls, numberToRollUnder);
+                viewModel.RollWinner = CheckforWinner(players, numberToRollUnder, playersWithRolls);
+                
+            }
+            return View("Index", viewModel);
+        }
+
+        private void CheckIfValid(List<Player> players, List<Player> playersWithRolls, int numberToRollUnder)
+        {
             foreach (var player in players)
             {
-                DiceRoll(player);
-
-                if (player.Roll <= numberToRollUnder)
+                if (player.Roll > numberToRollUnder)
                 {
-                    playersWithRolls.Add(player);
+                    playersWithRolls.Remove(player);
                 }
             }
-            var viewModel = new RollInfoViewModel();
-            viewModel.RollWinner = CheckforWinner(players, numberToRollUnder, playersWithRolls);
-            return View("Index", viewModel);
         }
 
         private Player CheckforWinner(List<Player> players, int numberToRollUnder, List<Player> playersWithRolls)
         {
             if (playersWithRolls.Count() == 0)
             {
-                GameRoll(players, numberToRollUnder);
+                GameRoll(players);
             }
 
             if (playersWithRolls.Count() >= 2)
             {
                 CheckForTie(playersWithRolls, numberToRollUnder);
             }
-            return players.FirstOrDefault();
+            return playersWithRolls.FirstOrDefault();
         }
 
         public void CheckForTie(List<Player> playersWithRolls,int numberToRollUnder)
@@ -100,7 +108,7 @@ namespace CallYourShot.Controllers
                 }
 
             }
-            GameRoll(tiedPLayersList, numberToRollUnder);
+            GameRoll(tiedPLayersList);
         }
         //*end dice logic
 
@@ -147,21 +155,23 @@ namespace CallYourShot.Controllers
 
         }
         //*will seperate out later end
-        public void GameScoreEntry(Player player) 
-        {
+        public void GameScoreEntry(Player player)
+        {            
+            var currentPlayersGameScores = new List<Player>().OrderByDescending(p => p.Roll).ToList<Player>();
             var score = 0;
-            player.GameScore = score ;
-            currentGamePlayersWithScores.Add(player);
-            
+            player.GameScore = score;
+            currentPlayersGameScores.Add(player);
+
         }
 
-        public Player GameWinnerLogic(List<Player> players, string gameList,string consoleList)
+        public Player GameWinnerLogic(List<Player> players, string gameList, string consoleList, List<Player> currentPlayersGameScores)
         {
-            GameTypes SelectedGameType;
-            // var currentPlayersGameScores = new List<Player>().OrderByDescending(p => p.Roll).ToList<Player>();  
-            if( SelectedGameType != GameTypes.Racing_Games) // type of racing game instead of string?
+            
+            GameTypes SelectedGameType = GameTypes.Battle_Royales;
+
+            if (SelectedGameType != GameTypes.Racing_Games) // type of racing game instead of string?
             {
-              var orderdedList = currentGamePlayersWithScores.OrderByDescending(p => p.Roll).ToList<Player>();
+                var orderdedList = currentPlayersGameScores.OrderByDescending(p => p.GameScore).ToList<Player>();
                 return orderdedList.First();
             }
             //* gonna code individual game score logic later but the two active ones should fit our needs for testing
@@ -173,14 +183,24 @@ namespace CallYourShot.Controllers
             //}
             else
             {
-                var orderdedList = currentGamePlayersWithScores.OrderBy(p => p.Roll).ToList<Player>();
+                var orderdedList = currentPlayersGameScores.OrderBy(p => p.GameScore).ToList<Player>();
                 return orderdedList.First();
             }
-            
+
         }
 
         //*end game logic
 
+        // state management
+        public List<Player> ResetPlayers(List<Player> activePlayers)
+        {
+            foreach (Player player in activePlayers)
+            {
+                player.Roll = 0;
+                player.GameScore = 0;
+            }
+            return activePlayers;
+        }
 
 
     }

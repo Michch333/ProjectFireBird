@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CallYourShot.Models.ViewModels
 {
-    public class HomePageViewModel
+    public class HomePageViewModel : HomePageWithRollResultViewModel
     {
         public HomePageViewModel()
         {
@@ -16,8 +16,10 @@ namespace CallYourShot.Models.ViewModels
             var Mike = new Player("Mike", 0);
             ActivePlayers.Add(Mike);
             RollWinner = new Player();
+            CurrentRoller = new Player();
 
         }
+        public Player CurrentRoller { get; set; }
         public List<Player> ActivePlayers { get; set; }
         public Player RollWinner { get; set; }
     }
