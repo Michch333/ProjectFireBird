@@ -20,7 +20,7 @@ namespace CallYourShot.Models
         //public string Initals { get; set; }
         //public bool DabCheck { get; set; }
         public int GameScore { get; set; }
-        public int Roll  { get; set; }
+        public int Roll { get; set; }
         //public int Wins { get; set; }
     }
 }

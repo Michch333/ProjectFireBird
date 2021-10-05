@@ -3,25 +3,21 @@
 }
 @model CallYourShot.Models.ViewModels.HomePageViewModel
 
+
 <div style="height: 80vh; width: 100%; display: flex; flex-direction: row; justify-content: space-between; border: 1px solid blue">
     <div id="player_left" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid red; flex: 1;" >
-        <div id="player_one" style="background-color: lightcyan;">
-            <h1>@Model.ActivePlayers[0].Name</h1>
-            <p>Current Roll: @Model.ActivePlayers[0].Roll</p><p>26</p>
-            <p>Current Game Score:</p>
-            <p>Dabcheck:</p>
-            <input type="checkbox" />
-            <p>Wins: 2</p>
-
-        </div>
-        <div id="player_two" style="background-color: lightgreen;">
-            <h1>@Model.ActivePlayers[1].Name</h1>
-            <p>Current Roll: @Model.ActivePlayers[1].Roll</p><p>42</p>
-            <p>Current Game Score:</p>
-            <p>Dabcheck:</p>
-            <input type="checkbox" />
-            <p>Wins: 3</p>
-        </div>
+        @foreach(Player player in Model.ActivePlayers)
+        {
+            <div>
+            <form asp-asp-controller="Home" asp-action="DiceRoll" a>
+            <label asp-for="@player.Name"></label>
+            <input asp-for="@player.Name" />
+            <a name="roll">@player.Roll</a>
+            <button onclick="href.location('/Home/DiceRoll')">Roll!</button>
+            </form>
+            </div>
+            Model.CurrentRoller = player;
+        }
     </div>
     <div id="game_field" style="flex: 3">
         @if (true)

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace CallYourShot.Models.ViewModels
 {
-    public class RollInfoViewModel
+    public class   HomePageWithRollResultViewModel
     {
-        public Player RollWinner { get; set; }
         public int NumberToRollUnder { get; set; }
-
-
+        public int CurrentRoll { get; set; }
+        public string CurrentRollName { get; set; }
+        public string NextRollerName { get; set; }
     }
 }
